@@ -1,51 +1,82 @@
 package com.example.demo.service;
 
-import com.example.demo.dao.UserDao;
 import com.example.demo.entity.User;
+import com.example.demo.repository.RoleRepository;
+import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
-
+import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements UserService {
+@Transactional(readOnly = true)
+public class UserServiceImpl implements UserDetailsService {
 
-    private final UserDao userDao;
+    public final UserRepository userRepository;
+
+    public final PasswordEncoder passwordEncoder;
+
+    public final RoleRepository roleRepository;
+
 
     @Autowired
-    public UserServiceImpl(UserDao userDao) {
-        this.userDao = userDao;
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<User> getAllUsers() {
-        return userDao.getAllUsers();
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
     }
 
     @Override
     @Transactional
-    public void add(User user) {
-        userDao.add(user);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = findByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException(String.format("User '%s' not found", email));
+        }
+        return user;
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public User getSingleUser(int id) {
-        return userDao.getSingleUser(id);
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
-    @Override
+    public List<User> allUsers() {
+        return userRepository.findAll();
+    }
+
+    public User findOne(long id) {
+        Optional<User> foundUser = userRepository.findById(id);
+        return foundUser.orElse(null);
+    }
+
     @Transactional
-    public void deleteUser(int id) {
-        userDao.deleteUser(id);
+    public void save(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles(new HashSet<>(user.getRoles()));
+        user.setNickName(user.getNickName());
+        userRepository.save(user);
     }
 
-    @Override
     @Transactional
-    public void updateUser(int id, User user) {
-        userDao.updateUser(id, user);
+    public void update(User user, long id) {
+        User oldUserData = userRepository.getById(id);
+        oldUserData.setEmail(user.getEmail());
+        oldUserData.setPassword(user.getPassword());
+        oldUserData.setNickName(user.getNickName());
+        oldUserData.setRoles(user.getRoles());
     }
+
+    @Transactional
+    public void delete(long id) {
+        userRepository.deleteById(id);
+    }
+
+
 }

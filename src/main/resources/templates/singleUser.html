@@ -8,14 +8,14 @@
 
 
 <p th:text="${'User id: ' + user.getId()}">VALUE<p>
-<p th:text="${'User name: ' + user.getName()}">VALUE<p>
-<p th:text="${'User surname: ' + user.getSurname()}">VALUE<p>
-<p th:text="${'User age: ' + user.getAge()}">VALUE<p>
+<p th:text="${'User email: ' + user.getEmail()}">VALUE<p>
+<p th:text="${'User password: ' + user.getPassword()}">VALUE<p>
+<p th:text="${'User nick: ' + user.getNickName()}">VALUE<p>
 
-    <a th:href="@{/users/{id}/edit(id=${user.getId()})}">Edit</a>
+    <a th:href="@{/admin/{id}/edit(id=${user.getId()})}">Edit</a>
 
 
-<form th:method="DELETE" th:action="@{/users/{id}(id=${user.getId()})}">
+<form th:method="DELETE" th:action="@{/admin/{id}(id=${user.getId()})}">
     <input type="submit" value="Delete"/>
 
 </form>

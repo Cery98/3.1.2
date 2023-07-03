@@ -6,19 +6,27 @@
 </head>
 <body>
 
-<form th:method="POST" th:action="@{/users}" th:object="${user}">
-    <label for="name">Enter name: </label>
-    <input type="text" th:field="*{name}" id="name"/>
-    <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+<form th:method="POST" th:action="@{/admin/}" th:object="${user}">
+    <label for="email">Enter email: </label>
+    <input type="text" th:field="*{email}" id="email"/>
+    <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div>
     <br/>
-    <label for="surname">Enter surname: </label>
-    <input type="text" th:field="*{surname}" id="surname"/>
-    <div style="color:red" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">Surname Error</div>
+    <label for="password">Enter password: </label>
+    <input type="text" th:field="*{password}" id="password"/>
+    <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
     <br/>
-    <label for="age">Enter age: </label>
-    <input type="text" th:field="*{age}" id="age"/>
-    <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age Error</div>
+    <label for="nickname">Enter nickname: </label>
+    <input type="text" th:field="*{nickName}" id="nickname"/>
+    <div style="color:red" th:if="${#fields.hasErrors('nickName')}" th:errors="*{nickName}">Nickname Error</div>
     <br/>
+    <label>Role:
+        <select size="2" multiple name="roles">
+            <option value="2">ADMIN</option>
+            <option selected="selected" value="1">USER</option>
+        </select>
+    </label>
+    <br><br>
+
     <input type="submit" value="Create"/>
 </form>
 
