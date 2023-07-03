@@ -59,8 +59,6 @@ public class UserServiceImpl implements UserDetailsService {
     @Transactional
     public void save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(new HashSet<>(user.getRoles()));
-        user.setNickName(user.getNickName());
         userRepository.save(user);
     }
 

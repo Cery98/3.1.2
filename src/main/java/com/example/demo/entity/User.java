@@ -24,7 +24,7 @@ public class User implements UserDetails {
     @Email(message = "Invalid email")
     private String email;
 
-    @Size(min = 4, max = 16, message = "Password length must be between 4 and 16")
+    @Size(min = 4, message = "Password length must be between 4 and 16")
     private String password;
     @Pattern(regexp = "[A-zА-я]+", message = "Invalid NickName")
     private String nickName;
