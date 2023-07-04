@@ -11,6 +11,7 @@
 <p th:text="${'User email: ' + user.getEmail()}">VALUE<p>
 <p th:text="${'User password: ' + user.getPassword()}">VALUE<p>
 <p th:text="${'User nick: ' + user.getNickName()}">VALUE<p>
+<p th:text="${'User role: ' + user.getRoles()}">VALUE<p>
 
     <a th:href="@{/admin/{id}/edit(id=${user.getId()})}">Edit</a>
 

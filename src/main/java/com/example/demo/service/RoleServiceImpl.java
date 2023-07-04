@@ -16,11 +16,6 @@ public class RoleServiceImpl {
     }
 
 
-    public List<Role> getAllRoles() {
-        return roleRepository.findAll();
-    }
-
-
     public void addRole(Role role) {
         roleRepository.save(role);
     }
