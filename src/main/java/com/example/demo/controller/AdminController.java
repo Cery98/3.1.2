@@ -46,26 +46,16 @@ public class AdminController {
     }
 
     @GetMapping("/new")
-    public String newUser(@ModelAttribute User user, Model model) {
-
-        List<Role> list = roleRepository.findAll();
-        model.addAttribute("allRoles", list);
+    public String newUser(@ModelAttribute User user) {
         return "newUser";
     }
 
     @PostMapping
-    public String createUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, Model model) {
-        System.out.println(user);
+    public String createUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            System.out.println("ERORRRRRRRRRRRRRRRRRRRRRRRRRRRRRRREEEEEEEEERRRRRRRRRRRRR");
             return "/newUser";
         }
-
-        List<Role> list = roleRepository.findAll();
-        model.addAttribute("allRoles", list);
-
         userServiceImpl.save(user);
-        System.out.println("SAAAAAAAAAAAAAAAAAVVVVVVVVVVVVVVVVVVVVVVEEEEEEEEEEEEEEEEEEEEEE");
         return "redirect:/admin";
     }
 
@@ -81,7 +71,6 @@ public class AdminController {
         if (bindingResult.hasErrors()) {
             return "updateUser";
         }
-        System.out.println(user);
         userServiceImpl.update(user, id);
         return "redirect:/admin";
     }

@@ -21,12 +21,15 @@
     <br/>
     <label>Role:
         <select size="2" multiple name="roles">
-            <option name="roles" th:each="role : ${allRoles}" th:value="${role.getId()}" th:text="${role.getRole()}"></option>
+            <option value="2">ADMIN</option>
+            <option selected="selected" value="1">USER</option>
         </select>
     </label>
     <br/>
     <br/>
     <input type="submit" value="Create"/>
+    <br>
+    <input type="button" value="Logout" onclick="window.location.href = 'logout'">
 </form>
 
 </body>
