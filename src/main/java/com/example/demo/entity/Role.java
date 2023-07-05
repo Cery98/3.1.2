@@ -13,9 +13,9 @@ public class Role implements GrantedAuthority {
     private long id;
 
     private String role;
-//     @Transient
-//    @ManyToMany(mappedBy = "roles")
-//    private Set<User> users;
+     @Transient
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users;
 
     public Role() {
     }
@@ -29,13 +29,13 @@ public class Role implements GrantedAuthority {
         this.role = role;
     }
 
-//    public Set<User> getUsers() {
-//        return users;
-//    }
-//
-//    public void setUsers(Set<User> users) {
-//        this.users = users;
-//    }
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
 
 
     public long getId() {
@@ -57,5 +57,10 @@ public class Role implements GrantedAuthority {
     @Override
     public String getAuthority() {
         return getRole();
+    }
+
+    @Override
+    public String toString() {
+        return role;
     }
 }

@@ -33,8 +33,8 @@ public class RunClass implements CommandLineRunner {
         Set<Role> userSet = Stream.of(userTest).collect(Collectors.toSet());
         Set<Role> adminSet = Stream.of(adminTest, userTest).collect(Collectors.toSet());
 
-        User user = new User("user@mail.ru","12","User",userSet);
-        User admin = new User("admin@mail.ru", "12", "admin",adminSet);
+        User user = new User("user@mail.ru","12","User", userSet);
+        User admin = new User("admin@mail.ru", "12", "admin", adminSet);
         userServiceImp.save(user);
         userServiceImp.save(admin);
     }

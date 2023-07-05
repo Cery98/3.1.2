@@ -26,7 +26,7 @@ public class UsersController {
 
     @GetMapping()
     public String showThisUser(ModelMap model, Principal principal) {
-        model.addAttribute("user", userServiceImpl.findByEmail(principal.getName()));
+        model.addAttribute("users", userServiceImpl.findByEmail(principal.getName()));
         return "singleUser";
     }
 

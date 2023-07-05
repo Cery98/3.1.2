@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.Collection;
@@ -28,11 +29,12 @@ public class User implements UserDetails {
     @Pattern(regexp = "[A-zА-я]+", message = "Invalid NickName")
     private String nickName;
 
+
     @ManyToMany()
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "username"),
             inverseJoinColumns = @JoinColumn(name = "role"))
-    private Collection<Role> roles;
+    private Set<Role> roles;
 
     public User() {
     }
@@ -41,6 +43,7 @@ public class User implements UserDetails {
         this.email = email;
         this.password = password;
         this.nickName = nickName;
+
     }
 
     public User(String email, String password, String nickName, Set<Role> roles) {
@@ -50,13 +53,14 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    public Collection<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Collection<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
 
     public long getId() {
         return Id;
@@ -118,6 +122,10 @@ public class User implements UserDetails {
 
     public void setNickName(String age) {
         this.nickName = age;
+    }
+
+    public String getAllRolesAsString() {
+        return getRoles().toString().replaceAll("\\[", "").replaceAll("\\]", "").replace("ROLE_", "");
     }
 
     @Override
