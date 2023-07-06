@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Entity
@@ -30,11 +32,11 @@ public class User implements UserDetails {
     private String nickName;
 
 
-    @ManyToMany()
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "username"),
             inverseJoinColumns = @JoinColumn(name = "role"))
-    private Set<Role> roles;
+    private Collection<Role> roles;
 
     public User() {
     }
@@ -46,18 +48,24 @@ public class User implements UserDetails {
 
     }
 
-    public User(String email, String password, String nickName, Set<Role> roles) {
+    public User(String email, String password, Collection<Role> roles) {
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    public User(String email, String password, String nickName, Collection<Role> roles) {
         this.email = email;
         this.password = password;
         this.nickName = nickName;
         this.roles = roles;
     }
 
-    public Set<Role> getRoles() {
+    public Collection<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(Collection<Role> roles) {
         this.roles = roles;
     }
 
@@ -79,8 +87,10 @@ public class User implements UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+    public Collection<Role> getAuthorities() {
+        return roles.stream()
+                .map(role -> new Role(role.getRole()))
+                .collect(Collectors.toList());
     }
 
     public String getPassword() {

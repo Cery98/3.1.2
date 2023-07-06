@@ -3,19 +3,23 @@ package com.example.demo.entity;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
-@Table(name = "roles")
+@Table(
+        name = "roles",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "role")
+        }
+)
 public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String role;
-     @Transient
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
+//     @Transient
+//    @ManyToMany(mappedBy = "roles")
+//    private Set<User> users;
 
     public Role() {
     }
@@ -24,18 +28,22 @@ public class Role implements GrantedAuthority {
         this.id = id;
     }
 
+    public Role(String role) {
+        this.role = role;
+    }
+
     public Role(long id, String role) {
         this.id = id;
         this.role = role;
     }
 
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
+//    public Set<User> getUsers() {
+//        return users;
+//    }
+//
+//    public void setUsers(Set<User> users) {
+//        this.users = users;
+//    }
 
 
     public long getId() {
@@ -56,7 +64,7 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return getRole();
+        return this.role;
     }
 
     @Override
